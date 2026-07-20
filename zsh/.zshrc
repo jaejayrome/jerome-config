@@ -157,6 +157,10 @@ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 
+# apple certification
+export SSL_CERT_FILE="$(~/.apple-certs/bin/python -m certifi)"
+export REQUESTS_CA_BUNDLE="$SSL_CERT_FILE"
+
 # =============================================================================
 #                               Aliases
 # =============================================================================
