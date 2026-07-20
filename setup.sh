@@ -1,55 +1,58 @@
 #!/usr/bin/env bash
 # =============================================================================
 #  jerome-config installer
-#  Symlinks configs into place and (optionally) installs Brewfile packages.
-#  Safe to re-run: existing real files are backed up, stale symlinks replaced.
+#  Symlinks configs into place with GNU Stow and (optionally) installs Brewfile.
+#  Safe to re-run: --restow refreshes links; real files that would conflict are
+#  backed up first so Stow won't abort.
 # =============================================================================
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.config-backup"
 
+# Stow packages (each mirrors $HOME internally). Add new dirs here.
+STOW_PACKAGES=(zsh git nvim starship tmux)
+
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[0;33m'; BLUE='\033[0;34m'; NC='\033[0m'
 info()  { echo -e "[${GREEN}INFO${NC}] $*"; }
 warn()  { echo -e "[${YELLOW}WARN${NC}] $*"; }
 header(){ echo -e "\n${BLUE}===== $* =====${NC}"; }
 
-# link <source-in-repo> <target-in-home>
-link() {
-  local src="$1" dest="$2"
-
-  # Already correctly linked -> nothing to do.
-  if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$src" ]; then
-    info "ok      $dest"
-    return
+header "GNU Stow"
+if ! command -v stow >/dev/null 2>&1; then
+  if command -v brew >/dev/null 2>&1; then
+    info "stow not found — installing via Homebrew"
+    brew install stow
+  else
+    warn "stow not found and Homebrew unavailable. Install stow, then re-run."
+    exit 1
   fi
+fi
 
-  mkdir -p "$(dirname "$dest")"
-
-  # Back up a real file/dir; just remove a stale symlink.
-  if [ -e "$dest" ] || [ -L "$dest" ]; then
-    if [ -L "$dest" ]; then
-      warn "relink  $dest (was -> $(readlink "$dest"))"
-      rm "$dest"
-    else
-      mkdir -p "$BACKUP_DIR"
-      warn "backup  $dest -> $BACKUP_DIR/"
-      mv "$dest" "$BACKUP_DIR/"
-    fi
-  fi
-
-  ln -s "$src" "$dest"
-  info "link    $dest -> $src"
+# Move any real (non-symlink) file/dir that Stow would collide with out of the
+# way, so a first run on a fresh machine doesn't abort. Existing Stow symlinks
+# are left alone — --restow handles those.
+backup_conflicts() {
+  # Ask Stow (simulation mode) what it would link, then back up real targets.
+  local line target
+  while IFS= read -r line; do
+    case "$line" in
+      "LINK: "*"=>"*)
+        target="${line#LINK: }"; target="${target%% =>*}"
+        target="$HOME/$target"
+        if { [ -e "$target" ] || [ -L "$target" ]; } && [ ! -L "$target" ]; then
+          mkdir -p "$BACKUP_DIR"
+          warn "backup  $target -> $BACKUP_DIR/"
+          mv "$target" "$BACKUP_DIR/"
+        fi
+        ;;
+    esac
+  done < <(stow -n -v --dir="$DOTFILES" --target="$HOME" "${STOW_PACKAGES[@]}" 2>&1 || true)
 }
 
-header "Symlinking configs"
-link "$DOTFILES/zsh/.zshrc"              "$HOME/.zshrc"
-link "$DOTFILES/zsh/.zprofile"           "$HOME/.zprofile"
-link "$DOTFILES/git/.gitconfig"          "$HOME/.gitconfig"
-link "$DOTFILES/git/.gitignore_global"   "$HOME/.gitignore_global"
-link "$DOTFILES/nvim"                    "$HOME/.config/nvim"
-link "$DOTFILES/starship/starship.toml"  "$HOME/.config/starship.toml"
-link "$DOTFILES/tmux/tmux.conf"          "$HOME/.config/tmux/tmux.conf"
+header "Symlinking configs with Stow"
+backup_conflicts
+stow -v --restow --dir="$DOTFILES" --target="$HOME" "${STOW_PACKAGES[@]}"
 
 header "Homebrew packages"
 if command -v brew >/dev/null 2>&1; then
@@ -66,3 +69,4 @@ fi
 header "Done"
 info "Backups (if any) are in $BACKUP_DIR"
 info "Restart your shell or run: source ~/.zshrc"
+info "To remove all symlinks later: stow -D --dir=\"$DOTFILES\" --target=\"$HOME\" ${STOW_PACKAGES[*]}"
