@@ -1,0 +1,14 @@
+.DS_Store
+**/.DS_Store
+
+# Editor / tooling
+*.swp
+.vscode/
+.idea/
+
+# Env / secrets
+.env
+.env.local
+
+# Build noise
+*.out

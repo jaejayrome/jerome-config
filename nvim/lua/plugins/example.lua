@@ -1,0 +1,24 @@
+-- EXAMPLE plugin spec — copy this file to add your own plugins.
+--
+-- Each file in lua/plugins/ returns a table of lazy.nvim specs. You can put
+-- one plugin per file, or group related ones in a single table.
+--
+-- Minimal form:
+--   return { "owner/repo" }
+--
+-- Common fields (see https://lazy.folke.io/spec):
+--   return {
+--     "owner/repo",
+--     event = "VeryLazy",              -- lazy-load trigger
+--     dependencies = { "another/repo" },
+--     keys = { { "<leader>x", "<cmd>DoThing<cr>", desc = "Do thing" } },
+--     opts = { ... },                   -- passed to require("plugin").setup(opts)
+--     config = function(_, opts)        -- or full manual setup
+--       require("plugin").setup(opts)
+--     end,
+--   }
+--
+-- After adding a plugin, run :Lazy sync inside Neovim to install it.
+--
+-- This file returns nothing installable so it's a no-op until you edit it.
+return {}

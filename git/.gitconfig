@@ -1,0 +1,55 @@
+[user]
+	name = Jerome Goh
+	email = goh_jerome@apple.com
+
+[core]
+	excludesfile = ~/.gitignore_global
+	editor = nvim
+	pager = delta --paging=always
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+# Rewrite Apple internal GitHub Enterprise URLs to use SSH.
+[url "git@github.pie.apple.com:"]
+	insteadOf = https://github.pie.apple.com/
+
+[interactive]
+	# Use delta for interactive operations (e.g. `git add -p`) in color-only mode
+	# so interactivity is preserved while adding syntax highlighting.
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true        # use n / N to move between diff sections
+	side-by-side = false
+	line-numbers = true
+	hyperlinks = true
+	hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+
+[merge]
+	conflictstyle = zdiff3 # show original + both sides during conflicts
+
+[diff]
+	colorMoved = default   # highlight moved lines
+
+[rerere]
+	enabled = true         # remember conflict resolutions
+
+[alias]
+	st = status -sb
+	co = checkout
+	br = branch
+	cm = commit -m
+	lg = log --oneline --graph --decorate --all
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	root = rev-parse --show-toplevel
