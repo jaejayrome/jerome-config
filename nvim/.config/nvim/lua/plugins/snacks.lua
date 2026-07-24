@@ -25,13 +25,6 @@ return {
       },
       sections = {
         { section = "header" },
-        {
-          pane = 2,
-          section = "terminal",
-          cmd = "pokemon-colorscripts --no-title -rn pikachu,charmander,bulbasaur,squirtle,charizard,blastoise,venusaur",
-          height = 20,
-          padding = 1,
-        },
         { section = "keys", gap = 1, padding = 1 },
         { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
         { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },

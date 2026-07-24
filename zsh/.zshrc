@@ -32,10 +32,11 @@ fi
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
+export STARSHIP_CONFIG="$HOME/jerome-config/starship/starship.toml"
 
-# NVM
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# NVM (installed via Homebrew — nvm.sh lives under the brew prefix, not $NVM_DIR)
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
 
 # =============================================================================
 #                               Init Shell
@@ -154,10 +155,7 @@ export GPG_TTY=$(tty)
 
 # pyenv configuration lives once at the bottom of this file (Prompt & Tools)
 
-# apple certification
-export SSL_CERT_FILE="$(~/.apple-certs/bin/python -m certifi)"
-export REQUESTS_CA_BUNDLE="$SSL_CERT_FILE"
-
+export JH=$(/usr/libexec/java_home -v 21)
 # =============================================================================
 #                               Aliases
 # =============================================================================
@@ -176,9 +174,10 @@ eval "$(starship init zsh)"
 export _ZO_DATA_DIR="$XDG_DATA_HOME"
 eval "$(zoxide init zsh)"
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+source <(acc --zsh-completions 2>/dev/null)
