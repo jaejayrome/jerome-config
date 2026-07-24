@@ -36,10 +36,5 @@ brew "nvm"           # node version manager
 brew "gnupg"
 
 # --- Casks ---
-cask "ghostty"
+cask "muxy"
 cask "font-jetbrains-mono-nerd-font"
-
-# --- Apple internal tools ---
-cask "apple/genai/apple-claude-code"
-brew "apple/shield/shieldcli"
-brew "apple/sdp/rio-ci"
