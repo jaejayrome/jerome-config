@@ -1,6 +1,6 @@
 [user]
 	name = Jerome Goh
-	email = goh_jerome@apple.com
+	email = jerome.goh.jg@gmail.com
 
 [core]
 	excludesfile = ~/.gitignore_global
@@ -18,10 +18,6 @@
 
 [fetch]
 	prune = true
-
-# Rewrite Apple internal GitHub Enterprise URLs to use SSH.
-[url "git@github.pie.apple.com:"]
-	insteadOf = https://github.pie.apple.com/
 
 [interactive]
 	# Use delta for interactive operations (e.g. `git add -p`) in color-only mode

@@ -11,7 +11,7 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.config-backup"
 
 # Stow packages (each mirrors $HOME internally). Add new dirs here.
-STOW_PACKAGES=(zsh git nvim starship tmux)
+STOW_PACKAGES=(zsh git nvim starship tmux vscode)
 
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[0;33m'; BLUE='\033[0;34m'; NC='\033[0m'
 info()  { echo -e "[${GREEN}INFO${NC}] $*"; }
@@ -77,6 +77,9 @@ fi
 
 header "Homebrew packages"
 if command -v brew >/dev/null 2>&1; then
+  # explicit trust since we need to trust repository as part of homebrew's new security feature
+  brew tap muxy-app/tap >/dev/null 2>&1 || true
+  brew trust --cask muxy-app/tap/muxy 2/dev/null || true
   read -rp "Run 'brew bundle' to install Brewfile packages? [y/N] " reply
   if [[ "$reply" =~ ^[Yy]$ ]]; then
     brew bundle --file="$DOTFILES/Brewfile"
@@ -85,6 +88,44 @@ if command -v brew >/dev/null 2>&1; then
   fi
 else
   warn "brew not found — install Homebrew first: https://brew.sh"
+fi
+
+header "VS Code CLI"
+if [ -d "/Applications/Visual Studio Code.app" ]; then
+  if ! command -v code >/dev/null 2>&1; then
+    warn "code CLI not on PATH yet — will be available after shell reload (~/.zprofile handles this)"
+  else
+    info "code CLI already available"
+  fi
+else
+  warn "VS Code.app not found in /Applications — install it (cask or manually) before continuing"
+fi
+
+header "VS Code extensions"
+if command -v code >/dev/null 2>&1 && [ -f "$DOTFILES/vscode-extensions.txt" ]; then
+  while IFS= read -r ext; do
+    [ -z "$ext" ] && continue
+    code --install-extension "$ext" --force
+  done < "$DOTFILES/vscode-extensions.txt"
+else
+  warn "code CLI not found or extensions list missing — skipping."
+fi
+
+header "Language servers for editor tooling"
+if command -v go >/dev/null 2>&1; then
+  info "installing gopls"
+  go install golang.org/x/tools/gopls@latest
+fi
+if command -v rustup >/dev/null 2>&1; then
+  info "ensuring rust-analyzer component"
+  rustup component add rust-analyzer 2>/dev/null || true
+fi
+
+header "Claude Code"
+if command -v claude >/dev/null 2>&1; then
+  info "Claude Code CLI already installed"
+else
+  warn "Claude Code CLI not found — install via Brewfile cask 'claude-code' (run brew bundle above)"
 fi
 
 header "Done"

@@ -1,0 +1,7 @@
+mathematic.vscode-pdf
+ms-vscode-remote.remote-ssh
+ms-vscode-remote.remote-ssh-edit
+ms-vscode.cpptools
+ms-vscode.remote-explorer
+oderwat.indent-rainbow
+anthropic.claude-code
