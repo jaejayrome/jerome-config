@@ -1,0 +1,49 @@
+{
+    "workbench.startupEditor": "none",
+    "liveServer.settings.donotVerifyTags": true,
+    "r.bracketedPaste": true,
+    "r.alwaysUseActiveTerminal": true,
+    "files.associations": {
+        "*.rmd": "markdown"
+    },
+    "files.autoSave": "afterDelay",
+    "editor.inlineSuggest.enabled": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "aws.suppressPrompts": {
+        "regionAddAutomatically": true
+    },
+    "terminal.integrated.env.osx": {},
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "typescriptreact"
+    ],
+    "diffEditor.ignoreTrimWhitespace": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "prisma.showPrismaDataPlatformNotification": false,
+    "tabnine.experimentalAutoImports": true,
+    "remote.SSH.remotePlatform": {
+        "*.gitpod.io": "linux"
+    },
+    "C_Cpp.copilotHover": "disabled",
+    "github.copilot.advanced": {},
+    "workbench.preferredDarkColorTheme": "Visual Studio Light",
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "cpp": false
+    },
+}

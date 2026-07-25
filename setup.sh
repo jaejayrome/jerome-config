@@ -77,9 +77,8 @@ fi
 
 header "Homebrew packages"
 if command -v brew >/dev/null 2>&1; then
-  # explicit trust since we need to trust repository as part of homebrew's new security feature
   brew tap muxy-app/tap >/dev/null 2>&1 || true
-  brew trust --cask muxy-app/tap/muxy 2/dev/null || true
+  brew trust --cask muxy-app/tap/muxy 2>/dev/null || true
   read -rp "Run 'brew bundle' to install Brewfile packages? [y/N] " reply
   if [[ "$reply" =~ ^[Yy]$ ]]; then
     brew bundle --file="$DOTFILES/Brewfile"
@@ -105,7 +104,11 @@ header "VS Code extensions"
 if command -v code >/dev/null 2>&1 && [ -f "$DOTFILES/vscode-extensions.txt" ]; then
   while IFS= read -r ext; do
     [ -z "$ext" ] && continue
-    code --install-extension "$ext" --force
+    if code --install-extension "$ext" --force; then
+      info "installed  $ext"
+    else
+      warn "failed to install extension: $ext"
+    fi
   done < "$DOTFILES/vscode-extensions.txt"
 else
   warn "code CLI not found or extensions list missing — skipping."
@@ -114,7 +117,7 @@ fi
 header "Language servers for editor tooling"
 if command -v go >/dev/null 2>&1; then
   info "installing gopls"
-  go install golang.org/x/tools/gopls@latest
+  go install golang.org/x/tools/gopls@latest || warn "gopls install failed — check network/go proxy"
 fi
 if command -v rustup >/dev/null 2>&1; then
   info "ensuring rust-analyzer component"
