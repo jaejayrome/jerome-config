@@ -23,6 +23,7 @@ brew "coreutils"     # GNU coreutils
 brew "tealdeer"      # tldr client
 brew "watch"         # re-run commands periodically
 brew "direnv"        # per-directory env vars
+brew "fastfetch"     # showcase os vitals
 
 # --- Editor & multiplexer ---
 brew "neovim"
@@ -78,7 +79,7 @@ brew "gnupg"
 brew "pinentry-mac"  # GPG passphrase prompts on macOS
 
 # --- Casks ---
-cask "muxy-app/tap/muxy"
+cask "muxy-app/tap/muxy", trusted: true
 cask "orbstack" # open-source container engine for MacOS
 cask "font-jetbrains-mono-nerd-font"
 

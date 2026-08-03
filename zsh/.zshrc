@@ -74,6 +74,9 @@ zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=btab:accept
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
+# run fastfetch
+fastfetch
+
 # =============================================================================
 #                              Helper Functions
 # =============================================================================
