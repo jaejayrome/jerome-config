@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Template: setup.sh fills in __DOTFILES__ / __HOME__ and installs it to
+     ~/Library/LaunchAgents (per-user, no sudo). Runs brew-sync.sh whenever the
+     Brewfile is saved. The repo dir is watched too because editors like Neovim
+     save by replacing the file, which a file-only watch can miss. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jerome-config.brew-sync</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__DOTFILES__/brew-sync/brew-sync.sh</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>__DOTFILES__/Brewfile</string>
+    <string>__DOTFILES__</string>
+  </array>
+  <key>ThrottleInterval</key>
+  <integer>5</integer>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/brew-sync.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/brew-sync.log</string>
+</dict>
+</plist>

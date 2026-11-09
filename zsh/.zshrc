@@ -32,7 +32,6 @@ fi
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
-export STARSHIP_CONFIG="$HOME/jerome-config/starship/starship.toml"
 
 # NVM (installed via Homebrew — nvm.sh lives under the brew prefix, not $NVM_DIR)
 export NVM_DIR="$HOME/.nvm"
@@ -168,6 +167,7 @@ alias ls='eza --grid --color=always --icons=always'
 alias tree='eza --tree'
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias lg='lazygit'
+alias gdu='gdu-go'
 
 # =============================================================================
 #                               Prompt & Tools

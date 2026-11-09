@@ -16,6 +16,8 @@ brew "ripgrep"       # fast grep (rg)
 brew "zoxide"        # smarter cd
 brew "git-delta"     # git diff pager
 brew "git-filter-repo"
+brew "ncdu"
+brew "gdu"
 brew "jq"            # JSON processor
 brew "yq"            # YAML processor
 brew "tree"
@@ -81,5 +83,6 @@ brew "pinentry-mac"  # GPG passphrase prompts on macOS
 # --- Casks ---
 cask "muxy-app/tap/muxy", trusted: true
 cask "orbstack" # open-source container engine for MacOS
+cask "thebrowsercompany-dia"
+cask "raycast" # replace spotlight, which isn't cask aware at all
 cask "font-jetbrains-mono-nerd-font"
-

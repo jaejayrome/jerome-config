@@ -10,7 +10,7 @@ Personal dotfiles for macOS (Apple Silicon) / Linux.
 | `zsh/.zprofile`         | Homebrew shellenv on login |
 | `nvim/`                 | Neovim — **minimal** `lazy.nvim` base; add your own plugins in `nvim/lua/plugins/` |
 | `tmux/tmux.conf`        | tmux: `Ctrl-a` prefix, vim-style panes, statusline |
-| `starship/starship.toml`| Starship prompt symbols |
+| `starship/.config/starship.toml`| Starship prompt symbols |
 | `git/.gitconfig`        | Git identity, delta pager, aliases |
 | `git/.gitignore_global` | Global ignores |
 | `Brewfile`              | Homebrew packages/casks |
@@ -25,7 +25,23 @@ bash setup.sh
 ```
 
 `setup.sh` symlinks configs into `~` and `~/.config`, backing up any existing
-real files to `~/.config-backup`. It then offers to run `brew bundle`.
+real files to `~/.config-backup`. It then offers to run `brew bundle`, which
+installs missing packages only and never upgrades.
+
+To also upgrade outdated packages, run `bash setup.sh --upgrade`. Casks upgrade
+first, then formulae one at a time, so one failed build doesn't block the rest.
+
+### Apps are managed by the Brewfile
+
+The `Brewfile` is the only thing you edit. `setup.sh` installs a per-user
+LaunchAgent (no sudo) that runs `brew-sync/brew-sync.sh` every time it's saved:
+
+- add a `cask "..."` / `brew "..."` line → it's installed (apps go to `~/Applications`)
+- delete a line → it's uninstalled
+
+Only lines you delete get uninstalled; anything you installed by hand is left
+alone. Find cask names with `brew search --cask <app>`. Log:
+`~/Library/Logs/brew-sync.log`.
 
 ## Neovim
 
