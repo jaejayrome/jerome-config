@@ -24,7 +24,6 @@ brew "tree"
 brew "coreutils"     # GNU coreutils
 brew "tealdeer"      # tldr client
 brew "watch"         # re-run commands periodically
-brew "dust"
 brew "direnv"        # per-directory env vars
 brew "fastfetch"     # showcase os vitals
 
@@ -42,7 +41,6 @@ brew "telnet"
 brew "ansible"
 brew "kafka"
 brew "redis"
-brew "terraform"
 
 # --- Kubernetes Tools ---
 brew "kubernetes-cli"
@@ -83,7 +81,8 @@ brew "pinentry-mac"  # GPG passphrase prompts on macOS
 
 # --- Casks ---
 cask "muxy-app/tap/muxy", trusted: true
+cask "wezterm" # want to keep the option of going back to wezterm + tmux again
+cask "helium-browser" # privacy-first browser that's similar to browser-company
 cask "orbstack" # open-source container engine for MacOS
-cask "thebrowsercompany-dia"
 cask "raycast" # replace spotlight, which isn't cask aware at all
 cask "font-jetbrains-mono-nerd-font"
