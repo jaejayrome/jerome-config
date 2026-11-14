@@ -84,26 +84,10 @@ mkdir -p "$HOME/Library/Application Support/Code/User"
 backup_conflicts
 stow -v --restow --dir="$DOTFILES" --target="$HOME" "${STOW_PACKAGES[@]}"
 
-# Muxy stores settings.json in Application Support and rewrites the whole file on
-# quit, so it can't be a Stow symlink. Copy our tracked version into place instead.
-# Muxy must be quit first, or it will overwrite the copy when it exits.
+# Muxy 2 rewrites its own settings files, so they can't be Stow symlinks.
+# muxy/settings.sh sets the values we care about through Muxy's CLI instead.
 header "Muxy settings"
-MUXY_DIR="$HOME/Library/Application Support/Muxy"
-if [ -d "$MUXY_DIR" ]; then
-  if pgrep -x Muxy >/dev/null 2>&1; then
-    warn "Muxy is running — quit it, then re-run this script so the copy sticks."
-  else
-    if [ -f "$MUXY_DIR/settings.json" ]; then
-      mkdir -p "$BACKUP_DIR"
-      cp "$MUXY_DIR/settings.json" "$BACKUP_DIR/muxy-settings.json.bak"
-      info "backup  $MUXY_DIR/settings.json -> $BACKUP_DIR/muxy-settings.json.bak"
-    fi
-    cp "$DOTFILES/muxy/settings.json" "$MUXY_DIR/settings.json"
-    info "copied  muxy/settings.json -> $MUXY_DIR/settings.json"
-  fi
-else
-  warn "Muxy not installed ($MUXY_DIR missing) — skipping."
-fi
+bash "$DOTFILES/muxy/settings.sh"
 
 header "Homebrew packages"
 if command -v brew >/dev/null 2>&1; then

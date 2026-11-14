@@ -24,6 +24,7 @@ brew "tree"
 brew "coreutils"     # GNU coreutils
 brew "tealdeer"      # tldr client
 brew "watch"         # re-run commands periodically
+brew "dust"
 brew "direnv"        # per-directory env vars
 brew "fastfetch"     # showcase os vitals
 
