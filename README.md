@@ -33,15 +33,17 @@ first, then formulae one at a time, so one failed build doesn't block the rest.
 
 ### Apps are managed by the Brewfile
 
-The `Brewfile` is the only thing you edit. `setup.sh` installs a per-user
-LaunchAgent (no sudo) that runs `brew-sync/brew-sync.sh` every time it's saved:
+The `Brewfile` is the full list of what should be installed. After editing it:
 
-- add a `cask "..."` / `brew "..."` line → it's installed (apps go to `~/Applications`)
-- delete a line → it's uninstalled
+- added a `cask "..."` / `brew "..."` line → run `setup.sh` (or
+  `brew bundle install --no-upgrade`); apps go to `~/Applications`
+- deleted a line → run `make cleanup`, or answer yes at the cleanup step of
+  `setup.sh`
 
-Only lines you delete get uninstalled; anything you installed by hand is left
-alone. Find cask names with `brew search --cask <app>`. Log:
-`~/Library/Logs/brew-sync.log`.
+Cleanup uninstalls **everything** not in the Brewfile, including anything you
+installed by hand, so add those to the Brewfile first. Preview what would be
+removed with `brew bundle cleanup` (no `--force`). Find cask names with
+`brew search --cask <app>`.
 
 ## Neovim
 

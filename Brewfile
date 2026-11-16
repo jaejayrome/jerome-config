@@ -5,6 +5,7 @@ tap "muxy-app/tap"
 brew "starship"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
+brew "stow"
 
 # --- Core CLI replacements / tools referenced by .zshrc ---
 brew "git"
@@ -18,6 +19,7 @@ brew "git-delta"     # git diff pager
 brew "git-filter-repo"
 brew "ncdu"
 brew "gdu"
+brew "htop"
 brew "jq"            # JSON processor
 brew "yq"            # YAML processor
 brew "tree"
@@ -61,8 +63,6 @@ brew "mycli"         # nicer mysql CLI (autocomplete, syntax highlighting)
 
 # --- Cloud CLIs ---
 brew "awscli"
-brew "azure-cli"
-cask "gcloud-cli"
 
 # -- AI Tools --
 cask "claude"        # Claude desktop app (Chat / Cowork / Code)
@@ -85,4 +85,5 @@ cask "wezterm" # want to keep the option of going back to wezterm + tmux again
 cask "helium-browser" # privacy-first browser that's similar to browser-company
 cask "orbstack" # open-source container engine for MacOS
 cask "raycast" # replace spotlight, which isn't cask aware at all
+cask "basictex"
 cask "font-jetbrains-mono-nerd-font"

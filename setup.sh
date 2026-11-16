@@ -118,20 +118,19 @@ if command -v brew >/dev/null 2>&1; then
     info "Skipped. Run later: brew bundle --no-upgrade --file=$DOTFILES/Brewfile"
   fi
 
-  header "Brewfile auto-sync"
-  # A per-user LaunchAgent (no sudo) runs brew-sync/brew-sync.sh whenever the
-  # Brewfile is saved: added lines get installed, deleted lines uninstalled.
-  AGENT_LABEL=com.jerome-config.brew-sync
-  AGENT_PLIST="$HOME/Library/LaunchAgents/$AGENT_LABEL.plist"
-  mkdir -p "$HOME/Library/LaunchAgents"
-  sed -e "s|__DOTFILES__|$DOTFILES|g" -e "s|__HOME__|$HOME|g" \
-    "$DOTFILES/brew-sync/$AGENT_LABEL.plist" >"$AGENT_PLIST"
-  launchctl bootout "gui/$(id -u)/$AGENT_LABEL" 2>/dev/null || true
-  if launchctl bootstrap "gui/$(id -u)" "$AGENT_PLIST"; then
-    info "watching $DOTFILES/Brewfile — edit it and apps install/uninstall on save"
-    info "log: ~/Library/Logs/brew-sync.log"
+  header "Brewfile cleanup"
+  # Remove the old brew-sync LaunchAgent if an earlier setup installed it.
+  launchctl bootout "gui/$(id -u)/com.jerome-config.brew-sync" 2>/dev/null || true
+  rm -f "$HOME/Library/LaunchAgents/com.jerome-config.brew-sync.plist"
+
+  # Uninstall anything not listed in the Brewfile. Shows the list first.
+  brew bundle cleanup --file="$DOTFILES/Brewfile" || true
+  read -rp "Remove everything listed above? [y/N] " reply || reply=n
+  if [[ "$reply" =~ ^[Yy]$ ]]; then
+    brew bundle cleanup --force --file="$DOTFILES/Brewfile" ||
+      warn "cleanup failed — see output above"
   else
-    warn "couldn't load the LaunchAgent (blocked by MDM?) — run brew-sync/brew-sync.sh by hand after editing the Brewfile"
+    info "Skipped. Run later: make cleanup"
   fi
 
   header "Registering apps with Spotlight"
