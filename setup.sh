@@ -84,6 +84,41 @@ mkdir -p "$HOME/Library/Application Support/Code/User"
 backup_conflicts
 stow -v --restow --dir="$DOTFILES" --target="$HOME" "${STOW_PACKAGES[@]}"
 
+# zsh/.zshrc sources $ZSH/oh-my-zsh.sh. Clone it directly rather than using the
+# official installer, which would overwrite the symlinked ~/.zshrc.
+header "Oh My Zsh"
+OMZ_DIR="$HOME/.oh-my-zsh"
+if [ -d "$OMZ_DIR" ]; then
+  info "already installed at $OMZ_DIR"
+else
+  info "cloning Oh My Zsh into $OMZ_DIR"
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$OMZ_DIR" ||
+    warn "Oh My Zsh clone failed — check network, then re-run setup.sh"
+fi
+
+# The symlinked ~/.zshrc is only read if zsh is the login shell. Some (managed)
+# Macs default new accounts to bash, so switch it explicitly.
+header "Default shell"
+ZSH_BIN="/bin/zsh"
+CURRENT_SHELL="$(dscl . -read "$HOME" UserShell 2>/dev/null | awk '{print $2}')"
+if [ "$CURRENT_SHELL" = "$ZSH_BIN" ]; then
+  info "login shell is already $ZSH_BIN"
+else
+  info "login shell is ${CURRENT_SHELL:-unknown} — switching to $ZSH_BIN (asks for your password)"
+  chsh -s "$ZSH_BIN" || warn "chsh failed — run manually: chsh -s $ZSH_BIN"
+fi
+
+# git/.gitconfig includes ~/.gitconfig-work for repos under ~/Work/. The file
+# is optional and gitignored (company details stay off GitHub); Stow links it
+# above when present. Absent means personal-only.
+header "Git profiles"
+if [ -f "$DOTFILES/git/.gitconfig-work" ]; then
+  mkdir -p "$HOME/Work"
+  info "work profile enabled for repos under ~/Work/"
+else
+  info "personal only — to add a work profile: cp gitconfig-work.example git/.gitconfig-work"
+fi
+
 # Muxy 2 rewrites its own settings files, so they can't be Stow symlinks.
 # muxy/settings.sh sets the values we care about through Muxy's CLI instead.
 header "Muxy settings"
@@ -116,6 +151,29 @@ if command -v brew >/dev/null 2>&1; then
       warn "some Brewfile packages failed to install — see output above"
   else
     info "Skipped. Run later: brew bundle --no-upgrade --file=$DOTFILES/Brewfile"
+  fi
+
+  # Brew's nvm ships no Node. Without a default version there's no node/npm on
+  # PATH and Mason can't install npm-based servers (pyright, bashls, jsonls...).
+  header "Node (nvm)"
+  NVM_SH="$(brew --prefix nvm 2>/dev/null)/nvm.sh"
+  if [ -s "$NVM_SH" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    mkdir -p "$NVM_DIR"
+    # nvm.sh isn't nounset-safe.
+    set +u
+    # shellcheck disable=SC1090
+    . "$NVM_SH"
+    if nvm ls default >/dev/null 2>&1 && [ -n "$(nvm version default | grep -v N/A)" ]; then
+      info "default node is $(nvm version default)"
+    else
+      info "installing Node LTS via nvm"
+      { nvm install --lts && nvm alias default 'lts/*'; } ||
+        warn "nvm install failed — run manually: nvm install --lts"
+    fi
+    set -u
+  else
+    warn "nvm not installed — Mason's npm-based packages will fail to install"
   fi
 
   header "Brewfile cleanup"

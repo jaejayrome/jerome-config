@@ -157,7 +157,6 @@ export GPG_TTY=$(tty)
 
 # pyenv configuration lives once at the bottom of this file (Prompt & Tools)
 
-export JH=$(/usr/libexec/java_home -v 21)
 # =============================================================================
 #                               Aliases
 # =============================================================================

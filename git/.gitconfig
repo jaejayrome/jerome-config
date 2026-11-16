@@ -49,3 +49,11 @@
 	last = log -1 HEAD
 	unstage = reset HEAD --
 	root = rev-parse --show-toplevel
+
+# Personal identity above is the default (~/Repositories and everywhere else).
+# Repos under ~/Work/ layer the company config on top. Opt in by copying
+# gitconfig-work.example to git/.gitconfig-work (gitignored; Stow links it to
+# ~/.gitconfig-work). Without it git skips the include and stays personal-only.
+# Keep this last so it overrides [user].
+[includeIf "gitdir:~/Work/"]
+	path = ~/.gitconfig-work
