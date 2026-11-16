@@ -176,6 +176,18 @@ else
   warn "brew not found — install Homebrew first: https://brew.sh"
 fi
 
+# Install the exact plugin versions pinned in lazy-lock.json. Letting LazyVim
+# update freely on first launch can mix incompatible versions (e.g. an old
+# LazyVim with the rewritten nvim-treesitter main branch).
+header "Neovim plugins"
+if command -v nvim >/dev/null 2>&1; then
+  info "restoring plugins from lazy-lock.json"
+  nvim --headless "+Lazy! restore" +qa ||
+    warn "plugin restore failed — open nvim and run :Lazy restore"
+else
+  warn "nvim not found — skipping plugin restore (run brew bundle above)"
+fi
+
 header "VS Code CLI"
 if [ -d "$HOME/Applications/Visual Studio Code.app" ] || [ -d "/Applications/Visual Studio Code.app" ]; then
   if ! command -v code >/dev/null 2>&1; then

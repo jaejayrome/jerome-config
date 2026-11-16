@@ -31,6 +31,7 @@ brew "fastfetch"     # showcase os vitals
 
 # --- Editor & multiplexer ---
 brew "neovim"
+brew "tree-sitter-cli"  # required by nvim-treesitter (main) to build parsers
 brew "tmux"
 brew "lazygit"
 brew "gh"            # GitHub CLI
