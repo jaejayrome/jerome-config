@@ -183,3 +183,13 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 source <(acc --zsh-completions 2>/dev/null)
+
+# Added by Trae CLI installer
+export PATH="/Users/bytedance/.local/bin:$PATH"
+
+# Kubernetes
+KUBECONFIG=""
+for f in "$HOME/.kube/config" "$HOME/.kube/configs/"*(N); do
+  [ -f "$f" ] && KUBECONFIG="${KUBECONFIG:+$KUBECONFIG:}$f"
+done
+export KUBECONFIG
