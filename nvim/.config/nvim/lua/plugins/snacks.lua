@@ -60,6 +60,22 @@ return {
         width = 0.1,
         height = 0,
       },
+      sources = {
+        -- Buffer manager modal (<leader>,): type to filter, <Esc> for normal
+        -- mode, then j/k to move, dd to close a buffer, <CR> to open.
+        buffers = {
+          layout = { preset = "default", layout = { width = 0.6, min_width = 80, height = 0.5 } },
+          win = {
+            input = {
+              keys = {
+                ["j"] = "list_down",
+                ["k"] = "list_up",
+                ["dd"] = "bufdelete",
+              },
+            },
+          },
+        },
+      },
     },
     scope = { enabled = true },
     scroll = { enabled = true },

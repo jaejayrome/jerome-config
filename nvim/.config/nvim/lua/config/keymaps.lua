@@ -100,3 +100,9 @@ vim.keymap.set("n", "<C-l>", nav("l", "move-focus-or-tab", "right"), { desc = "N
 for _, key in ipairs({ "h", "j", "k", "l" }) do
   vim.keymap.set("t", "<C-" .. key .. ">", "<C-\\><C-n><C-w>" .. key, { desc = "Navigate " .. key .. " (from terminal)" })
 end
+
+-- LazyVim's <leader>bb jumps to the alternate buffer with no UI; open the
+-- buffer picker popup instead (<leader>` still jumps to the alternate buffer).
+vim.keymap.set("n", "<leader>bb", function()
+  Snacks.picker.buffers()
+end, { desc = "Buffers" })
