@@ -1,5 +1,5 @@
 "$schema" = 'https://starship.rs/config-schema.json'
-format = """$all $fill $cmd_duration
+format = """$all$kubernetes $fill $cmd_duration
 $character"""
 
 scan_timeout = 500
@@ -24,6 +24,8 @@ symbol = ' '
 
 [aws]
 symbol = "  "
+format = '[$symbol($profile )(\($region\) )]($style)'
+style = "bold yellow"
 
 [buf]
 symbol = " "
@@ -93,6 +95,12 @@ symbol = " "
 
 [kotlin]
 symbol = " "
+
+[kubernetes]
+disabled = false
+symbol = "󱃾 "
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "bold blue"
 
 [lua]
 symbol = " "
