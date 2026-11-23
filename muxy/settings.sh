@@ -11,7 +11,10 @@ set -euo pipefail
 
 muxy() {
   for app in "$HOME/Applications/Muxy.app" /Applications/Muxy.app; do
-    [ -x "$app/Contents/MacOS/muxy" ] && { "$app/Contents/MacOS/muxy" "$@"; return; }
+    [ -x "$app/Contents/MacOS/muxy" ] && {
+      "$app/Contents/MacOS/muxy" "$@"
+      return
+    }
   done
   echo "Muxy not installed, skipping." >&2
   exit 0
@@ -22,5 +25,5 @@ muxy() {
 muxy config set terminal.font_families '["JetBrainsMono Nerd Font"]'
 muxy config set terminal.font_size 13
 
-muxy config set appearance.dark_theme "TokyoNight Storm"
+muxy config set appearance.dark_theme "Aizen Dark"
 muxy config set appearance.light_theme "TokyoNight Storm"

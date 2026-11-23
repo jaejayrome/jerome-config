@@ -1,5 +1,6 @@
 # --- Taps ---
 tap "muxy-app/tap"
+tap "hashicorp/tap", trusted: true
 
 # --- Shell & prompt ---
 brew "starship"
@@ -44,6 +45,7 @@ brew "telnet"
 brew "ansible"
 brew "kafka"
 brew "redis"
+brew "terraform"
 
 # --- Kubernetes Tools ---
 brew "kubernetes-cli"
