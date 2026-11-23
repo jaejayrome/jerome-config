@@ -123,6 +123,26 @@ function jwt() {
   echo "$1" | jq -R 'split(".") | .[0,1] | @base64d | fromjson' 2>/dev/null || error "Invalid JWT"
 }
 
+# Switch AWS_PROFILE for this shell (fzf picker when no arg; "none" unsets)
+function set_aws() {
+  local profile="$1"
+  if [[ -z "$profile" ]]; then
+    profile=$(aws configure list-profiles | fzf --prompt="AWS profile> " --height=40% --reverse) || return 1
+  fi
+  if [[ "$profile" == "none" ]]; then
+    unset AWS_PROFILE
+    info "AWS_PROFILE unset"
+    return
+  fi
+  if ! aws configure list-profiles | grep -qx "$profile"; then
+    error "Unknown AWS profile: $profile"; return 1
+  fi
+  export AWS_PROFILE="$profile"
+  info "AWS_PROFILE=$AWS_PROFILE"
+}
+function _set_aws() { compadd none $(aws configure list-profiles 2>/dev/null) ; }
+compdef _set_aws set_aws
+
 # fzf preview helpers
 function _fzf_compgen_path() { fd --hidden --exclude .git . "$1"; }
 function _fzf_compgen_dir()  { fd --type=d --hidden --exclude .git . "$1"; }
@@ -167,6 +187,18 @@ alias tree='eza --tree'
 alias cdr='cd $(git rev-parse --show-toplevel)'
 alias lg='lazygit'
 alias gdu='gdu-go'
+alias k='kinit --keychain jerome.gzs@BYTEDANCE.COM'
+alias j='ssh jump-sg.tiktok-row.org -K -tt ssh'
+alias jn='ssh jump-bdsgdt.byted.org -K -tt ssh'
+alias je='ssh jump-eu.tiktok-row.org -K -tt ssh'
+alias ju='ssh jump-us.tiktok-row.org -K -tt ssh'
+alias cu='ssh jump-useast2a.tiktok-eu.org -K -tt ssh'
+alias c='ssh jump-ie.tiktok-eu.org -K -tt ssh'
+alias jt='ssh jump-mytob.byted.org -K -tt ssh'
+alias o='orthrus-cli demand -t 24 -R i18n-og'
+alias oe='orthrus-cli demand -t 24 -R euclient'
+alias ansible-sg="o 10.240.35.239 & ssh -J jump-proxy-us.tiktok-row.org  root@10.240.35.239"
+alias ansible-eu="oe 10.107.196.12 & ssh -J jump-proxy-ie.tiktok-eu.org  root@10.107.196.12"
 
 # =============================================================================
 #                               Prompt & Tools

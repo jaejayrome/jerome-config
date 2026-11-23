@@ -6,6 +6,7 @@
 	excludesfile = ~/.gitignore_global
 	editor = nvim
 	pager = delta --paging=always
+	hooksPath = /Users/bytedance/.bytesec/commit_hook/
 
 [init]
 	defaultBranch = main
